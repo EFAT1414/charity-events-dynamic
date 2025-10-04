@@ -1,0 +1,20 @@
+{
+  "name": "charity-events-dynamic",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "NODE_ENV=production node src/server.js",
+    "db:setup": "node src/db-setup.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "mysql2": "^3.10.0",
+    "zod": "^3.23.8",
+    "morgan": "^1.10.0"
+  }
+}

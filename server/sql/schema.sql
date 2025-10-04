@@ -1,0 +1,50 @@
+DROP TABLE IF EXISTS registrations;
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS organisations;
+
+CREATE TABLE organisations (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  website VARCHAR(255),
+  email VARCHAR(255),
+  phone VARCHAR(50),
+  address VARCHAR(255),
+  active TINYINT(1) NOT NULL DEFAULT 1
+);
+
+CREATE TABLE categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  slug VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  org_id INT NOT NULL,
+  category_id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  location VARCHAR(255) NOT NULL,
+  event_date DATE NOT NULL,
+  start_time TIME NOT NULL,
+  end_time TIME NOT NULL,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  goal_amount DECIMAL(12,2) DEFAULT 0.00,
+  raised_amount DECIMAL(12,2) DEFAULT 0.00,
+  suspended TINYINT(1) NOT NULL DEFAULT 0,
+  image_url VARCHAR(255),
+  FOREIGN KEY (org_id) REFERENCES organisations(id) ON DELETE CASCADE,
+  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
+);
+
+CREATE TABLE registrations (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  event_id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  tickets INT NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+);

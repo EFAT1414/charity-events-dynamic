@@ -16,6 +16,30 @@ function progressBar(goal, raised) {
   </div>`;
 }
 
+async function loadRegistrations(eventId) {
+  const box = document.createElement('div');
+  box.className = 'mt-4';
+  box.innerHTML = `<h2 class="h5">Recent Tickets</h2><div id="reg-list" class="list-group"></div>`;
+  document.querySelector('#event-root .col-md-7').appendChild(box);
+
+  const res = await fetch(`/api/registrations?event_id=${eventId}&sort=desc`);
+  const arr = await res.json();
+  const list = document.getElementById('reg-list');
+  if (!arr.length) {
+    list.innerHTML = `<div class="text-muted">No tickets yet.</div>`;
+    return;
+  }
+  list.innerHTML = arr.map(r => `
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <div class="fw-bold">${r.name}</div>
+        <div class="small text-muted">${new Date(r.created_at).toLocaleString()}</div>
+      </div>
+      <span class="badge bg-primary rounded-pill">${r.tickets}</span>
+    </div>
+  `).join('');
+}
+
 async function init() {
   const res = await fetch('/api/events/' + id);
   if (!res.ok) {
@@ -44,19 +68,20 @@ async function init() {
           <p class="card-text"><strong>Price:</strong> ${Number(e.price) === 0 ? 'Free' : '$'+Number(e.price).toFixed(2)}</p>
           <form id="reg-form">
             <input type="hidden" name="event_id" value="${e.id}">
-            <div class="form-group">
+            <div class="form-group mb-2">
               <label>Name</label>
               <input name="name" class="form-control" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
               <label>Email</label>
               <input type="email" name="email" class="form-control" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
               <label>Tickets</label>
               <input type="number" name="tickets" min="1" max="20" value="1" class="form-control" required>
             </div>
             <button class="btn btn-primary btn-block" type="submit">Register</button>
+            <a href="/register.html?id=${e.id}" class="btn btn-outline-secondary mt-2">Open Full Registration Page</a>
           </form>
           <div id="msg" class="mt-3"></div>
         </div>
@@ -75,10 +100,14 @@ async function init() {
     if (res.ok) {
       msg.innerHTML = '<div class="alert alert-success">Thank you! Your registration has been received.</div>';
       ev.currentTarget.reset();
+      document.querySelector('#reg-list')?.remove();
+      await loadRegistrations(e.id);
     } else {
       const err = await res.json().catch(()=>({error:'Error'}));
       msg.innerHTML = '<div class="alert alert-danger">Could not register: '+(err.error||'Unknown error')+'</div>';
     }
   });
+
+  loadRegistrations(e.id);
 }
 init();

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin • Events</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <style> .small-muted{font-size:.9rem;color:#666;} </style>
+</head>
+<body class="container py-4">
+  <nav class="mb-3 d-flex justify-content-between">
+    <a class="btn btn-link p-0" href="/index.html">← Back to Site</a>
+    <span class="text-muted small">Admin Area</span>
+  </nav>
+
+  <h1 class="h4 mb-3">Admin • Events</h1>
+
+  <div class="alert alert-info small">
+    Enter your <strong>admin token</strong> below; this page calls protected admin APIs.
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Admin Token</label>
+    <input id="token" class="form-control" placeholder="Enter admin token">
+  </div>
+
+  <h2 class="h5 mt-4">Create / Update Event</h2>
+  <form id="eventForm" class="card p-3 shadow-sm">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label class="form-label">Event ID (for update)</label>
+        <input class="form-control" name="id" placeholder="Leave empty to create">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Org ID</label>
+        <input class="form-control" name="org_id" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Category ID</label>
+        <input class="form-control" name="category_id" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Suspended (0/1)</label>
+        <input class="form-control" name="suspended" value="0">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Name</label>
+        <input class="form-control" name="name" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Location</label>
+        <input class="form-control" name="location" required>
+      </div>
+      <div class="col-md-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" name="description" required></textarea>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Date (YYYY-MM-DD)</label>
+        <input class="form-control" name="event_date" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Start (HH:MM)</label>
+        <input class="form-control" name="start_time" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">End (HH:MM)</label>
+        <input class="form-control" name="end_time" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Price</label>
+        <input class="form-control" name="price" value="0">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Goal</label>
+        <input class="form-control" name="goal_amount" value="0">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Raised</label>
+        <input class="form-control" name="raised_amount" value="0">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Image URL</label>
+        <input class="form-control" name="image_url">
+      </div>
+    </div>
+    <div class="mt-3 d-flex gap-2">
+      <button class="btn btn-primary" id="btnCreate">Create</button>
+      <button class="btn btn-warning" id="btnUpdate" type="button">Update</button>
+      <button class="btn btn-danger" id="btnDelete" type="button">Delete</button>
+    </div>
+    <div id="msg" class="mt-3"></div>
+  </form>
+
+  <h2 class="h5 mt-4">Current Events</h2>
+  <div id="list" class="row"></div>
+
+  <script src="/admin/js/events-admin.js"></script>
+</body>
+</html>

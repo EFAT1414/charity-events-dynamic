@@ -1,4 +1,4 @@
-# Charity Events Dynamic Website
+# Charity Events Dynamic Website - https://24287366.it.scu.edu.au/
 
 A Node.js + MySQL dynamic site for managing charity events. Includes:
 - Home page showing upcoming and past events (suspended events hidden)
